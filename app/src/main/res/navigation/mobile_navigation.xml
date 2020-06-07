@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.heejae.foopa.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/activity_main" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_takeaway"
+            app:destination="@id/navigation_takeaway" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_eathere"
+            app:destination="@id/navigation_eathere" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_mypage"
+            app:destination="@id/navigation_mypage" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_takeaway"
+        android:name="com.heejae.foopa.ui.dashboard.DashboardFragment"
+        android:label="@string/title_takeaway"
+        tools:layout="@layout/fragment_takeaway" />
+
+    <fragment
+        android:id="@+id/navigation_eathere"
+        android:name="com.heejae.foopa.ui.notifications.NotificationsFragment"
+        android:label="@string/title_eathere"
+        tools:layout="@layout/fragment_eathere" />
+
+    <fragment
+        android:id="@+id/navigation_mypage"
+        android:name="com.heejae.foopa.ui.mypage.MypageFragment"
+        android:label="마이페이지"
+        tools:layout="@layout/fragment_mypage" />
+</navigation>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+    <!--    android:paddingTop="?attr/actionBarSize">-->
+
+    <!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+    <!--        android:id="@+id/nav_view"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="0dp"-->
+    <!--        android:layout_marginEnd="0dp"-->
+    <!--        android:background="?android:attr/windowBackground"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintRight_toRightOf="parent"-->
+    <!--        app:menu="@menu/bottom_nav_menu"-->
+    <!--        />-->
+
+    <LinearLayout
+        android:id="@+id/nav_host"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/upper_linear_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <SearchView
+                    android:id="@+id/search_any"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusableInTouchMode="false"
+                    android:onClick="SearchAny">
+
+                </SearchView>
+
+                <Button
+                    android:id="@+id/map_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_yellow_button"
+                    android:drawableStart="@drawable/ic_map_black_24dp"
+                    android:onClick="mapView"
+                    android:paddingStart="5dp"
+                    android:text="지도보기" />
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/home_banner"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#FFCA28">
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/menu_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/menu_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:columnCount="1"
+                app:orientation="vertical"
+                app:rowCount="4">
+
+
+                <LinearLayout
+                    android:id="@+id/menu_row1"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/imageBtn_all"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="fill"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:contentDescription="전체"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_eat_4461470" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton11"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="fill"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:contentDescription="스트릿푸드"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_street_food_stall" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton12"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="fill"
+                        android:layout_weight="1"
+                        android:contentDescription="한식"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_row2"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/imageButton15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="양식"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="중식"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="일식"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_row3"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/imageButton18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="분식"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="드링크/바"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="구이"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_row4"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/imageButton21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="분식"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="드링크/바"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="구이"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/ic_hamburger_1435092" />
+                </LinearLayout>
+            </androidx.gridlayout.widget.GridLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

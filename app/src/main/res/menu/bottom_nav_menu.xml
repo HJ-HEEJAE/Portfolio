@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_takeaway"
+        android:icon="@drawable/ic_directions_run_black_24dp"
+        android:title="@string/title_takeaway" />
+
+    <item
+        android:id="@+id/navigation_eathere"
+        android:icon="@drawable/ic_store_black_24dp"
+        android:title="@string/title_eathere" />
+
+    <item
+        android:id="@+id/navigation_mypage"
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:title="@string/title_mypage" />
+
+</menu>

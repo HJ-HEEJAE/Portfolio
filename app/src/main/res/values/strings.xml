@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">FOOPA</string>
+    <string name="title_home">홈</string>
+    <string name="title_takeaway">포장</string>
+    <string name="title_eathere">매장식사</string>
+    <string name="title_mypage">마이페이지</string>
+    <string name="title_location_setting">위치설정</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
