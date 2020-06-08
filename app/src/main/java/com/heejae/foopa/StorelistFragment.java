@@ -18,6 +18,7 @@ import com.heejae.foopa.SQLite.DBHelper;
 
 import java.util.ArrayList;
 
+import static com.heejae.foopa.HomeFragment.keyword_All;
 
 public class StorelistFragment extends Fragment {
     private View view;
@@ -28,9 +29,6 @@ public class StorelistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_storelist, container, false);
-
-        TextView list_title = view.findViewById(R.id.list_title);
-        list_title.setText("전체보기");
 
         // (Linear)LayoutManager와 Adapter를 RecyclerView에 연결
         RecyclerView recyclerView = view.findViewById(R.id.store_list);
@@ -47,41 +45,33 @@ public class StorelistFragment extends Fragment {
     private void getData(){
         resultList.clear(); // initialize
         Bundle bundle = getArguments();
-        for (int i=0; i<bundle.size(); i++) {
+        for (int i=0; i<bundle.size()-1; i++) {
             resultList.add(bundle.getStringArray("id_"+i));
         }
+        String menu_category = bundle.getString("Menu_Category");
+        TextView list_title = view.findViewById(R.id.list_title);
+        list_title.setText(menu_category);
 
-//        List<Integer> listResId = Arrays.asList(
-//                R.drawable.chrysanthemum,
-//        );
-        String store_kind = "";
-        String menu_kind = "";
-        String store_location = "";
+        String store_kind = "포장/매장"; //
+        String menu_kind = "전체"; //
+        String store_location = ""; //
         for (int i = 0; i < resultList.size(); i++) {
-            // 각 List의 값들을 data 객체에 set 해줍니다.
+            // 각 List의 값들을 data 객체에 세팅.
             RecyclerAdapter.Data data = new RecyclerAdapter.Data();
-            data.setStoreName(resultList.get(i)[3]);
-            if (resultList.get(i)[1]=="all") {
-                store_kind = "포장/매장";
-            }else {
-                store_kind = resultList.get(i)[1];
-            }
-            if (resultList.get(i)[2]=="all"){
-                menu_kind = "전체";
-            }else{
-                menu_kind = resultList.get(i)[2];
-            }
-            if (resultList.get(i)[4] != null && resultList.get(i)[5] == null){
-                store_location = resultList.get(i)[4]+","+resultList.get(i)[5];
+            data.setStoreName(resultList.get(i)[4]);    //매장명
+            store_kind = resultList.get(i)[2];  //영업 종류
+            menu_kind = resultList.get(i)[3];   //메뉴 종류
+            if (resultList.get(i)[5] != null && resultList.get(i)[6] != null && resultList.get(i)[5] != "" && resultList.get(i)[6] != ""){
+                store_location = resultList.get(i)[5]+","+resultList.get(i)[6];
             }
             data.setStoreContent("["+store_kind+"] " + menu_kind +" / 위치: "+ store_location);
             data.setResId(R.mipmap.ic_launcher);
 
-            // 각 값이 들어간 data를 adapter에 추가합니다.
+            // 각 값이 들어간 data를 adapter에 추가
             adapter.addItem(data);
         }
 
-        // adapter의 값이 변경되었다는 것을 알려줍니다.
+        // adapter의 값이 변경되었다는 것을 알림.
         adapter.notifyDataSetChanged();
     }
 

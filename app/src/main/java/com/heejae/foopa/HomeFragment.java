@@ -25,6 +25,7 @@ public class HomeFragment extends Fragment {
     private DBHelper db;
     private FragmentTransaction transaction;
     private ArrayList<String[]> resultList = new ArrayList<String[]>();
+    public static String keyword_All = "All";
 //    private Integer[] imgArr;
 //    public enum gridItem {
 //        MENU_ALL, MENU_STREET, MENU_KO, MENU_WEST, MENU_CH, MENU_JP, MENU_SNACK, MENU_DRINK, MENU_ETC
@@ -47,67 +48,67 @@ public class HomeFragment extends Fragment {
         ImageButton ibMenuDrink = view.findViewById(R.id.menu_drink);
         ImageButton ibMenuEtc = view.findViewById(R.id.menu_etc);
 
-        ibMenuAll.setOnClickListener(new View.OnClickListener(){
+        ibMenuAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultList = db.getStores("all", "all");
-                renderList(resultList);
+                resultList = db.getStores(keyword_All, keyword_All);
+                renderList(resultList, "전체보기");
             }
         });
-        ibMenuStreet.setOnClickListener(new View.OnClickListener(){
+        ibMenuStreet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultList = db.getStores("all", "스트릿");
-                renderList(resultList);
+                resultList = db.getStores(keyword_All, "스트릿");
+                renderList(resultList, "스트릿");
             }
         });
-        ibMenuKo.setOnClickListener(new View.OnClickListener(){
+        ibMenuKo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultList = db.getStores("all", "한식");
-                renderList(resultList);
+                resultList = db.getStores(keyword_All, "한식");
+                renderList(resultList, "한식");
             }
         });
-        ibMenuWest.setOnClickListener(new View.OnClickListener(){
+        ibMenuWest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultList = db.getStores("all", "양식");
-                renderList(resultList);
+                resultList = db.getStores(keyword_All, "양식");
+                renderList(resultList, "양식");
             }
         });
-        ibMenuCh.setOnClickListener(new View.OnClickListener(){
+        ibMenuCh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultList = db.getStores("all", "중식");
-                renderList(resultList);
+                resultList = db.getStores(keyword_All, "중식");
+                renderList(resultList, "중식");
             }
         });
-        ibMenuJp.setOnClickListener(new View.OnClickListener(){
+        ibMenuJp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultList = db.getStores("all", "일식");
-                renderList(resultList);
+                resultList = db.getStores(keyword_All, "일식");
+                renderList(resultList, "일식");
             }
         });
-        ibMenuSnack.setOnClickListener(new View.OnClickListener(){
+        ibMenuSnack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultList = db.getStores("all", "분식");
-                renderList(resultList);
+                resultList = db.getStores(keyword_All, "분식");
+                renderList(resultList, "분식");
             }
         });
-        ibMenuDrink.setOnClickListener(new View.OnClickListener(){
+        ibMenuDrink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultList = db.getStores("all", "드링크");
-                renderList(resultList);
+                resultList = db.getStores(keyword_All, "드링크");
+                renderList(resultList, "드링크");
             }
         });
-        ibMenuEtc.setOnClickListener(new View.OnClickListener(){
+        ibMenuEtc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resultList = db.getStores("all", "기타");
-                renderList(resultList);
+                resultList = db.getStores(keyword_All, "기타");
+                renderList(resultList, "기타");
             }
         });
 //        List<String> list = new ArrayList<>();
@@ -128,21 +129,23 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-public void renderList(ArrayList<String[]> resultList){
-    // 다음 프래그먼트에 전달할 데이터
-    Bundle bundle = new Bundle();
-    for (int i=0; i<resultList.size(); i++){
-        Log.d("wholestoreId: ", resultList.get(i)[0]);
-        bundle.putStringArray("id_"+i, resultList.get(i)); // key and value
-    }
-    StorelistFragment storelistFragment = new StorelistFragment();
-    storelistFragment.setArguments(bundle);  // fragment에 데이터(번들) 넘기기
-    transaction = getActivity().getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.main_frame, storelistFragment);
-    transaction.addToBackStack(null);
-    transaction.commit();
-}
+    public void renderList(ArrayList<String[]> resultList, String menu_category) {
+        // 다음 프래그먼트에 전달할 데이터
+        Bundle bundle = new Bundle();
+        for (int i = 0; i < resultList.size(); i++) {
+            Log.d("wholestoreId: ", resultList.get(i)[0]);
+            bundle.putStringArray("id_" + i, resultList.get(i)); // key and value
+        }
+        bundle.putString("Menu_Category", menu_category);
 
+        StorelistFragment storelistFragment = new StorelistFragment();
+        storelistFragment.setArguments(bundle);  // fragment에 데이터(번들) 넘기기
+        transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_frame, storelistFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+}
 //    public class MyAdapter extends BaseAdapter {
 //        ArrayList<HomeMenuItem> items = new ArrayList<HomeMenuItem>();
 //
@@ -170,6 +173,6 @@ public void renderList(ArrayList<String[]> resultList){
 //            return null;
 //        }
 //    }
-}
+
 
 

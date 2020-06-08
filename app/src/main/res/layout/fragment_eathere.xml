@@ -24,7 +24,7 @@
         android:id="@+id/menu_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="73dp"
+        android:layout_marginBottom="75dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,18 +69,17 @@
                         android:drawableStart="@drawable/ic_map_black_24dp"
                         android:onClick="mapView"
                         android:paddingStart="5dp"
-                        android:text="지도보기" />
+                        android:paddingEnd="5dp"
+                        android:text="@string/map_view" />
 
                 </LinearLayout>
-
-                // 이벤트 및 공지사항
 
                 <HorizontalScrollView
                     android:id="@+id/home_banner"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
                     android:background="#FFCA28">
 
                 </HorizontalScrollView>
@@ -90,7 +89,7 @@
             <ScrollView
                 android:id="@+id/menu_scroll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:fillViewport="true">
 

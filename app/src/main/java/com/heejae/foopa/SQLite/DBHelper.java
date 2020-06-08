@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.heejae.foopa.HomeFragment.keyword_All;
+
 public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     public final static String USER_TABLE_NAME = "user";
     public final static String USER_ID = "user_id";
@@ -151,9 +153,9 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         db = this.getReadableDatabase();
         Cursor cursor = null;
         // Home - 전체(포장/매장)
-        if (store_kind.equals("all")){
+        if (store_kind.equals(keyword_All)){
             // 전체 메뉴
-            if (menu_kind.equals("all")){
+            if (menu_kind.equals(keyword_All)){
                 cursor = db.rawQuery("SELECT * FROM wholestore", null);
             // 메뉴 카테고리 선택
             }else{
@@ -162,7 +164,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         // 포장 or 매장
         }else{
             // 전체 메뉴
-            if (menu_kind.equals("all")){
+            if (menu_kind.equals(keyword_All)){
                 cursor = db.rawQuery("SELECT * FROM wholestore WHERE store_kind = ?", new String[] {store_kind});
             // 메뉴 카테고리 선택
             }else{
@@ -173,12 +175,13 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()){
                 String id = cursor.getString(cursor.getColumnIndex(WHOLE_ID));
-//                String store_kind = cursor.getString(cursor.getColumnIndex(STORE_KIND));
-//                String menu_kind = cursor.getString(cursor.getColumnIndex(MENU_KIND));
+                String user_id = cursor.getString(cursor.getColumnIndex(USER_ID));
+                store_kind = cursor.getString(cursor.getColumnIndex(STORE_KIND));
+                menu_kind = cursor.getString(cursor.getColumnIndex(MENU_KIND));
                 String store = cursor.getString(cursor.getColumnIndex(STORE));
                 String locationX = cursor.getString(cursor.getColumnIndex(STORE_LOCATION_X));
                 String locationY = cursor.getString(cursor.getColumnIndex(STORE_LOCATION_Y));
-                storelist.add(new String[] {id, store_kind, menu_kind, store, locationX, locationY});
+                storelist.add(new String[] {id, user_id, store_kind, menu_kind, store, locationX, locationY});
             }
             cursor.close();
             return storelist;
@@ -214,7 +217,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     // 2차원 배열리스트 개념
     public ArrayList<String[]> getStore(String user_id, String store_kind, String menu_kind){
         db = this.getReadableDatabase();
-        Cursor cursor;
+        Cursor cursor = null;
         // Home - 전체(포장/매장)
         if (store_kind.equals("all")){
             cursor = db.rawQuery("SELECT * FROM store WHERE user_id = ? AND menu_kind = ?", new String[] {user_id, menu_kind});
@@ -227,9 +230,12 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()){
                 String id = cursor.getString(cursor.getColumnIndex(STORE_ID));
+                user_id = cursor.getString(cursor.getColumnIndex(USER_ID));
+                store_kind = cursor.getString(cursor.getColumnIndex(STORE_KIND));
+                menu_kind = cursor.getString(cursor.getColumnIndex(MENU_KIND));
                 String store = cursor.getString(cursor.getColumnIndex(STORE_NAME));
                 String menu = cursor.getString(cursor.getColumnIndex(MENU));
-                storeInfo.add(new String[] {id, store, menu});
+                storeInfo.add(new String[] {id, user_id, store_kind, menu_kind, store, menu});
             }
             cursor.close();
             return storeInfo;

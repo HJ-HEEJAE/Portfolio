@@ -7,24 +7,33 @@
     android:layout_height="match_parent"
     tools:context=".StorelistFragment">
 
-    <TextView
-        android:id="@+id/list_title"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#FFC107"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
-        android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/store_list"
+    <FrameLayout
+        android:id="@+id/list_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="@+id/list_title"
-        app:layout_constraintStart_toStartOf="@+id/list_title"
-        app:layout_constraintTop_toTopOf="@+id/list_title" />
+        android:layout_marginBottom="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/list_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFC107"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/store_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
