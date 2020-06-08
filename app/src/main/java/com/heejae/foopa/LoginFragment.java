@@ -22,7 +22,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login, container, false);
-        db = new DBHelper(getActivity(), "User.db", null, 1);
+        db = new DBHelper(getActivity(), "foopa.db", null, 1);
 
         final EditText login_id = view.findViewById(R.id.login_id);
         final EditText login_password = view.findViewById(R.id.login_password);

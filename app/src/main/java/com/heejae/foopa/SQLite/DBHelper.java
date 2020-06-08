@@ -8,11 +8,25 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
-    public final static String TABLE_NAME = "user";
-    public final static String ID = "user_id";
+    public final static String USER_TABLE_NAME = "user";
+    public final static String USER_ID = "user_id";
     public final static String PASSWORD = "user_password";
-    public final static String NAME = "user_name";
+    public final static String USER_NAME = "user_name";
+    public final static String WHOLE_STORE_TABLE_NAME = "wholestore";
+    public final static String WHOLE_ID = "id";
+    public final static String STORE_KIND = "store_kind";
+    public final static String MENU_KIND = "menu_kind";
+    public final static String STORE = "store";
+    public final static String STORE_LOCATION_X = "locationX";
+    public final static String STORE_LOCATION_Y = "locationY";
+    public final static String STORE_TABLE_NAME = "store";
+    public final static String STORE_ID = "id";
+    public final static String STORE_NAME = "store_name";
+    public final static String MENU = "menu";
     private SQLiteDatabase db;
 
     public DBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
@@ -22,16 +36,27 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create Table
-        String create_query = "CREATE TABLE IF NOT exists " + TABLE_NAME + "(" + ID + " text PRIMARY KEY, " + PASSWORD + " text NOT NULL, " + NAME + " text NOT NULL);";
-        db.execSQL(create_query);
+        String create_user_query = "CREATE TABLE IF NOT exists " + USER_TABLE_NAME + "(" + USER_ID + " text PRIMARY KEY NOT NULL, " + PASSWORD + " text NOT NULL, " + USER_NAME + " text NOT NULL);";
+        String create_wholestore_query = "CREATE TABLE IF NOT exists "+ WHOLE_STORE_TABLE_NAME + "(" + WHOLE_ID + " integer PRIMARY KEY NOT NULL, " + USER_ID + " text NOT NULL, " + STORE_KIND + " text NOT NULL, "
+                                        + MENU_KIND + " text NOT NULL, " + STORE + " text NOT NULL, " + STORE_LOCATION_X + " real, "+ STORE_LOCATION_Y
+                                        + " real, FOREIGN KEY("+USER_ID+") REFERENCES "+USER_TABLE_NAME+"("+USER_ID+"));";
+        String create_store_query = "CREATE TABLE IF NOT exists "+ STORE_TABLE_NAME + "(" + STORE_ID + " integer PRIMARY KEY NOT NULL, " + USER_ID + " text NOT NULL, " + STORE_KIND + " text NOT NULL, "
+                                        + MENU_KIND + " text NOT NULL, " + STORE_NAME + " text NOT NULL, " + MENU + " text NOT NULL, FOREIGN KEY("+USER_ID+") REFERENCES "+USER_TABLE_NAME+"("+USER_ID+"));";
+        db.execSQL(create_user_query);
+        db.execSQL(create_wholestore_query);
+        db.execSQL(create_store_query);
     }
 
     // Version managing
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop Table
-        String drop_query = "DROP TABLE " + TABLE_NAME + ";";
+        String drop_query = "DROP TABLE " + USER_TABLE_NAME + ";";
+        String drop_wholestore_query = "DROP TABLE " + WHOLE_STORE_TABLE_NAME + ";";
+        String drop_store_query = "DROP TABLE " + STORE_TABLE_NAME + ";";
         db.execSQL(drop_query);
+        db.execSQL(drop_wholestore_query);
+        db.execSQL(drop_store_query);
         // Re-Create Table
         onCreate(db);
     }
@@ -39,13 +64,15 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
 
     // DB Insert
     // 유저 추가
-    public boolean insert(String user_id, String user_password, String user_name) {
+    public boolean userInsert(String user_id, String user_password, String user_name) {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ID, user_id);
+        values.put(USER_ID, user_id);
         values.put(PASSWORD, user_password);
-        values.put(NAME, user_name);
-        long ins = db.insert(TABLE_NAME, null, values);
+        values.put(USER_NAME, user_name);
+//        String insert_query = "INSERT INTO " + TABLE_NAME + "("+ ID +","+PASSWORD+","+NAME+") VALUES ("+user_id+","+user_password+","+user_name+")";
+        long ins = db.insert(USER_TABLE_NAME, null, values);
+        Log.d("insert", "id: "+ins);
 //        return (ins == -1) ? false : true; // 성공 여부 반환
         if (ins == -1){
             return false;
@@ -73,6 +100,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     // 로그인 정보 체크, 성공시 유저 정보 전달.
     public String[] checkLogin(String user_id, String user_password){
         db = this.getReadableDatabase();
+        Log.d("login: ", user_id+" "+user_password);
         Cursor cursor = db.rawQuery("SELECT * FROM user WHERE user_id = ? AND user_password = ?", new String[] {user_id, user_password});
         // 정보가 일치하는 유저 존재
         if (cursor.getCount() > 0){
@@ -81,8 +109,8 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
             String login_user_password = "";
             // 계속해서 다음 행 선택 (여기서는 id가 unique하므로 결과는 하나의 행만 도출될 것)
             while (cursor.moveToNext()) {
-                login_user_id = cursor.getString(cursor.getColumnIndex(ID));
-                login_user_password = cursor.getString(cursor.getColumnIndex(NAME));
+                login_user_id = cursor.getString(cursor.getColumnIndex(USER_ID));
+                login_user_password = cursor.getString(cursor.getColumnIndex(USER_NAME));
             }
             // 같은 방식
 //            while (cursor.moveToNext()) {
@@ -92,10 +120,123 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
 //            }
             cursor.close();
             return new String[]{login_user_id, login_user_password};
-
         }else{
             cursor.close();
             return new String[] {"", ""};
         }
     }
+
+    // 가게 추가
+    public boolean storeInsert(String user_id, String store_kind, String menu_kind, String store, Double locationX, Double locationY) {
+        db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USER_ID, user_id);
+        values.put(STORE_KIND, store_kind);
+        values.put(MENU_KIND, menu_kind);
+        values.put(STORE, store);
+        values.put(STORE_LOCATION_X, locationX);
+        values.put(STORE_LOCATION_Y, locationY);
+        long ins = db.insert(WHOLE_STORE_TABLE_NAME, null, values);
+        Log.d("insert store", "id: "+ins);
+        if (ins == -1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    // 가게 select
+    // Home 화면에서 넘어가는 카테고리 별 가게 목록
+    public ArrayList<String[]> getStores(String store_kind, String menu_kind){
+        db = this.getReadableDatabase();
+        Cursor cursor = null;
+        // Home - 전체(포장/매장)
+        if (store_kind.equals("all")){
+            // 전체 메뉴
+            if (menu_kind.equals("all")){
+                cursor = db.rawQuery("SELECT * FROM wholestore", null);
+            // 메뉴 카테고리 선택
+            }else{
+                cursor = db.rawQuery("SELECT * FROM wholestore WHERE menu_kind = ?", new String[] {menu_kind});
+            }
+        // 포장 or 매장
+        }else{
+            // 전체 메뉴
+            if (menu_kind.equals("all")){
+                cursor = db.rawQuery("SELECT * FROM wholestore WHERE store_kind = ?", new String[] {store_kind});
+            // 메뉴 카테고리 선택
+            }else{
+                cursor = db.rawQuery("SELECT * FROM wholestore WHERE store_kind = ? AND menu_kind = ?", new String[] {store_kind, menu_kind});
+            }
+        }
+        ArrayList<String[]> storelist = new ArrayList<String[]>();
+        if (cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                String id = cursor.getString(cursor.getColumnIndex(WHOLE_ID));
+//                String store_kind = cursor.getString(cursor.getColumnIndex(STORE_KIND));
+//                String menu_kind = cursor.getString(cursor.getColumnIndex(MENU_KIND));
+                String store = cursor.getString(cursor.getColumnIndex(STORE));
+                String locationX = cursor.getString(cursor.getColumnIndex(STORE_LOCATION_X));
+                String locationY = cursor.getString(cursor.getColumnIndex(STORE_LOCATION_Y));
+                storelist.add(new String[] {id, store_kind, menu_kind, store, locationX, locationY});
+            }
+            cursor.close();
+            return storelist;
+        }else{
+            cursor.close();
+            return storelist;
+        }
+    }
+
+    // 메뉴 추가
+    public boolean menuInsert(String user_id, String store_kind, String menu_kind, String store, String[] menu) {
+        db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USER_ID, user_id);
+        values.put(STORE_KIND, store_kind);
+        values.put(MENU_KIND, menu_kind);
+        values.put(STORE_NAME, store);
+        for (int i=0; i<menu.length; i++){
+            values.put(MENU, menu[i]);
+            long ins = db.insert(STORE_TABLE_NAME, null, values);
+            Log.d("insert menu", "id: "+ins);
+            if (ins == -1){
+                return false;
+            }else{
+                values.remove(MENU);    // initialize menu key for next menu.
+                return true;
+            }
+        }
+        return true;
+    }
+
+    // 가게정보(메뉴) select by store_kind(포장/매장), menu_kind(메뉴카테고리)
+    // 2차원 배열리스트 개념
+    public ArrayList<String[]> getStore(String user_id, String store_kind, String menu_kind){
+        db = this.getReadableDatabase();
+        Cursor cursor;
+        // Home - 전체(포장/매장)
+        if (store_kind.equals("all")){
+            cursor = db.rawQuery("SELECT * FROM store WHERE user_id = ? AND menu_kind = ?", new String[] {user_id, menu_kind});
+        // 포장 or 매장
+        }else{
+            cursor = db.rawQuery("SELECT * FROM store WHERE user_id = ? AND store_kind = ? AND menu_kind = ?", new String[] {user_id, store_kind, menu_kind});
+        }
+
+        ArrayList<String[]> storeInfo = new ArrayList<String[]>();
+        if (cursor.getCount() > 0){
+            while (cursor.moveToNext()){
+                String id = cursor.getString(cursor.getColumnIndex(STORE_ID));
+                String store = cursor.getString(cursor.getColumnIndex(STORE_NAME));
+                String menu = cursor.getString(cursor.getColumnIndex(MENU));
+                storeInfo.add(new String[] {id, store, menu});
+            }
+            cursor.close();
+            return storeInfo;
+        }else{
+            cursor.close();
+            return storeInfo;
+        }
+    }
+
 }

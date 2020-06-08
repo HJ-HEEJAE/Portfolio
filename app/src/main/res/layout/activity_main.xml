@@ -45,7 +45,6 @@
                 android:id="@+id/set_address_Btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
                 android:layout_marginTop="-6dp"
                 android:layout_marginEnd="2sp"
                 android:layout_marginBottom="6dp"
