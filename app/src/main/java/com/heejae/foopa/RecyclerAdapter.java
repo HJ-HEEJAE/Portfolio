@@ -1,5 +1,6 @@
 package com.heejae.foopa;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.heejae.foopa.SQLite.DBHelper;
 
 import java.util.ArrayList;
 
@@ -37,6 +41,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         storeList.add(data);
     }
 
+    // 클릭 이벤트 준비
+    public interface  OnItemClickListener{
+        void onItemClick(View v, Data data);
+    }
+    private OnItemClickListener mListener = null;
+    public void setOnItemClickListener(OnItemClickListener listner){
+        this.mListener = listner;
+    }
+
+    // 뷰홀더
     // ItemViewHolder - 리스트의 요소(텍스트, 이미지)를 설정하고 홀딩하기 위한 클래스, 메소드.
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView tv1;
@@ -49,6 +63,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             tv1 = itemView.findViewById(R.id.store_name);
             tv2 = itemView.findViewById(R.id.store_content);
             iv = itemView.findViewById(R.id.store_image);
+
+            // 뷰홀더 생성하면서 클릭 이벤트 리스너 붙이기
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();    // 클릭 위치
+                    if (position != RecyclerView.NO_POSITION){
+                        Data item = storeList.get(position);
+                        if (mListener != null){
+                            mListener.onItemClick(v, item);
+                        }
+//                        Data item = storeList.get(position);    // 포지션 이용해 데이터 추출
+//                        String user_id = item.getUserId();
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("user_id", user_id);
+                    }
+                }
+            });
         }
 
         public void onBind(Data data) {
@@ -60,6 +92,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
     // Data - 리스트의 요소를 담는 클래스
     public static class Data {
+        private String userId; // unique key
         private String storeName;
         private String storeContent;
         private int resId;
@@ -70,18 +103,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         //            getResources().getIdentifier("@drawable/", "drawable", getActivity().getPackageName());
         //            this.resId = resId;
         //        }
+        // 표시하지는 않고 식별자로서 가지고 있을 매장 ID (=사업주 아이디. 1매장 1아이디로 구상)
+        public void setUserId(String user_id){
+            this.userId = user_id;
+        }
+        public String getUserId(){
+            return userId;
+        }
         public void setStoreName(String storeName) {
             this.storeName = storeName;
         }
-
-        public void setStoreContent(String storeContent) {
-            this.storeContent = storeContent;
-        }
-
         public String getStoreName() {
             return storeName;
         }
-
+        public void setStoreContent(String storeContent) {
+            this.storeContent = storeContent;
+        }
         public String getStoreContent() {
             return storeContent;
         }
@@ -89,7 +126,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         public int getResId() {
             return resId;
         }
-
         public void setResId(int resId) {
             this.resId = resId;
         }

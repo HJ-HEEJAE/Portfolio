@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +23,8 @@ import static com.heejae.foopa.HomeFragment.keyword_All;
 
 public class StorelistFragment extends Fragment {
     private View view;
-    private DBHelper db;
+//    private DBHelper db;
+    private FragmentTransaction transaction;
     private RecyclerAdapter adapter = new RecyclerAdapter();
     private ArrayList<String[]> resultList = new ArrayList<String[]>();
 
@@ -52,12 +54,15 @@ public class StorelistFragment extends Fragment {
         TextView list_title = view.findViewById(R.id.list_title);
         list_title.setText(menu_category);
 
+        // 리사이클러에 나타낼 데이터   // 어댑터 사용
         String store_kind = "포장/매장"; //
         String menu_kind = "전체"; //
         String store_location = ""; //
+        // 각 List의 값들을 data 객체에 세팅.
         for (int i = 0; i < resultList.size(); i++) {
-            // 각 List의 값들을 data 객체에 세팅.
+            // 리사이클러 어댑터
             RecyclerAdapter.Data data = new RecyclerAdapter.Data();
+            data.setUserId(resultList.get(i)[1]);   // 유저아이디(=매장ID)
             data.setStoreName(resultList.get(i)[4]);    //매장명
             store_kind = resultList.get(i)[2];  //영업 종류
             menu_kind = resultList.get(i)[3];   //메뉴 종류
@@ -69,6 +74,22 @@ public class StorelistFragment extends Fragment {
 
             // 각 값이 들어간 data를 adapter에 추가
             adapter.addItem(data);
+
+            // 이벤트 리스너
+            adapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, RecyclerAdapter.Data data) {
+                        String user_id = data.getUserId();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("user_id", user_id);
+                        StoreDetailFragment storeDetailFragment = new StoreDetailFragment();
+                        storeDetailFragment.setArguments(bundle);   // 데이터(아이디) 전달
+                        transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.main_frame, storeDetailFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                }
+            });
         }
 
         // adapter의 값이 변경되었다는 것을 알림.
