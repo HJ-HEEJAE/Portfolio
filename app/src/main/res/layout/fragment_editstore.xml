@@ -1,14 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditstoreFragment">
+    tools:context=".AddstoreFragment" >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <EditText
+        android:id="@+id/store_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:ems="10"
+        android:hint="메뉴"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/store_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="가격"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/store_menu"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/store_menu"
+        app:layout_constraintTop_toBottomOf="@+id/store_menu" />
+
+    <EditText
+        android:id="@+id/store_user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="아이디"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/store_price"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/store_price"
+        app:layout_constraintTop_toBottomOf="@+id/store_price" />
+
+    <EditText
+        android:id="@+id/add_store_kind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="매장유형"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/store_user_id"
+        app:layout_constraintStart_toStartOf="@+id/store_user_id"
+        app:layout_constraintTop_toBottomOf="@+id/store_user_id" />
+
+    <EditText
+        android:id="@+id/add_store_menu_kind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="메뉴종류"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/add_store_kind"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/add_store_kind"
+        app:layout_constraintTop_toBottomOf="@+id/add_store_kind" />
+
+    <EditText
+        android:id="@+id/add_store_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="매장명"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/add_store_menu_kind"
+        app:layout_constraintStart_toStartOf="@+id/add_store_menu_kind"
+        app:layout_constraintTop_toBottomOf="@+id/add_store_menu_kind" />
+
+    <EditText
+        android:id="@+id/add_store_loc_x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="위치(X)"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/add_store_name"
+        app:layout_constraintStart_toStartOf="@+id/add_store_name"
+        app:layout_constraintTop_toBottomOf="@+id/add_store_name" />
+
+    <EditText
+        android:id="@+id/add_store_loc_y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="위치(Y)"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/add_store_loc_x"
+        app:layout_constraintStart_toStartOf="@+id/add_store_loc_x"
+        app:layout_constraintTop_toBottomOf="@+id/add_store_loc_x" />
+
+    <Button
+        android:id="@+id/edit_store_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="편집"
+        app:layout_constraintEnd_toEndOf="@+id/add_store_loc_y"
+        app:layout_constraintStart_toStartOf="@+id/add_store_loc_y"
+        app:layout_constraintTop_toBottomOf="@+id/add_store_loc_y" />
+</androidx.constraintlayout.widget.ConstraintLayout>

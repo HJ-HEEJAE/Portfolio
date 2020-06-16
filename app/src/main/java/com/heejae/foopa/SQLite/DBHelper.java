@@ -134,7 +134,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     }
 
     // 가게 추가
-    public boolean storeInsert(String user_id, String store_kind, String menu_kind, String store, Double locationX, Double locationY) {
+    public boolean storeInsert(String user_id, String store_kind, String menu_kind, String store, double locationX, double locationY) {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USER_ID, user_id);
@@ -200,28 +200,26 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     }
 
     // 메뉴 추가
-    public boolean menuInsert(String user_id, String store_kind, String menu_kind, String store, String[] menu, int[] price) {
+    public boolean menuInsert(String user_id, String store_kind, String menu_kind, String store, String menu, int price) {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USER_ID, user_id);
         values.put(STORE_KIND, store_kind);
         values.put(MENU_KIND, menu_kind);
         values.put(STORE_NAME, store);
-        for (int i=0; i<menu.length; i++){
-            values.put(MENU, menu[i]);
-            values.put(PRICE, price[i]);
-            long ins = db.insert(STORE_TABLE_NAME, null, values);
-            Log.d("insert menu", "id: "+ins);
-            if (ins == -1){
-                return false;
-            }else{
-                // initialize menu and price keys for next menu.
-                values.remove(MENU);
-                values.remove(PRICE);
-                return true;
-            }
+//        for (int i=0; i<menu.length; i++){
+        values.put(MENU, menu);
+        values.put(PRICE, price);
+        long ins = db.insert(STORE_TABLE_NAME, null, values);
+        Log.d("insert menu", "id: "+ins);
+        if (ins == -1){
+            return false;
+        }else{
+            // initialize menu and price keys for next menu.
+            values.remove(MENU);
+            values.remove(PRICE);
+            return true;
         }
-        return true;
     }
 
     // 매장메뉴 select by store_kind(포장/매장)

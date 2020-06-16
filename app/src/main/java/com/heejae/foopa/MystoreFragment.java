@@ -32,6 +32,7 @@ public class MystoreFragment extends Fragment {
     private DBHelper db;
     private MyApplication myApp;
     private FragmentTransaction transaction;
+    private String[] storeInfo;
 
     // 포장, 매장 각각 등록된 매장 있는 경우 매장추가 비활성화/매장보이기
     @Override
@@ -51,7 +52,7 @@ public class MystoreFragment extends Fragment {
 //        ehContent.setVisibility(View.INVISIBLE);
 
         // 로그인 더블 체크 & 포장 or 매장식사 등록 확인
-        String user_id = myApp.getLoggedUser();
+        final String user_id = myApp.getLoggedUser();
         Log.d("user_id", user_id);
         if (user_id.length() == 0){
             Toast.makeText(getActivity(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
@@ -73,7 +74,7 @@ public class MystoreFragment extends Fragment {
                 editTaStoreBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        modifyStoreDetail(getString(R.string.takeAway));
+                        modifyStoreDetail(user_id, getString(R.string.takeAway), storeInfo[3], storeInfo[4], storeInfo[5], storeInfo[6]);
                     }
                 });
                 LinearLayout.LayoutParams taParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, taContent.getHeight());
@@ -88,7 +89,7 @@ public class MystoreFragment extends Fragment {
                 addTaStoreBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        inputStoreDetail(getString(R.string.takeAway));
+                        inputStoreDetail(user_id, getString(R.string.takeAway));
                     }
                 });
             }
@@ -103,7 +104,7 @@ public class MystoreFragment extends Fragment {
                 editEhStoreBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        modifyStoreDetail(getString(R.string.eatHere));
+                        modifyStoreDetail(user_id, getString(R.string.eatHere), storeInfo[3], storeInfo[4], storeInfo[5], storeInfo[6]);
                     }
                 });
                 LinearLayout.LayoutParams ehParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ehContent.getHeight());
@@ -118,7 +119,7 @@ public class MystoreFragment extends Fragment {
                 addEhStoreBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        inputStoreDetail(getString(R.string.eatHere));
+                        inputStoreDetail(user_id, getString(R.string.eatHere));
                     }
                 });
             }
@@ -131,7 +132,7 @@ public class MystoreFragment extends Fragment {
     public void showStoreInfo(String user_id, String store_kind, View view){
         db = new DBHelper(getActivity(), "foopa.db", null, 1);
         // 매장정보
-        String[] storeInfo = db.getStoreInfo(user_id, store_kind);
+        storeInfo = db.getStoreInfo(user_id, store_kind);
 //        new String[] {id, user_id, store_kind, menu_kind, store, locationX, locationY};
         if (store_kind.equals(getString(R.string.takeAway))){
             TextView ta_title = view.findViewById(R.id.ta_title);
@@ -173,9 +174,10 @@ public class MystoreFragment extends Fragment {
         }
     }
 
-    public void inputStoreDetail(String store_kind){
+    public void inputStoreDetail(String user_id, String store_kind){
         AddstoreFragment addstoreFragment = new AddstoreFragment();
         Bundle bundle = new Bundle();
+        bundle.putString("user_id", user_id);
         bundle.putString("store_kind", store_kind);
         addstoreFragment.setArguments(bundle);
         transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -183,10 +185,15 @@ public class MystoreFragment extends Fragment {
         transaction.addToBackStack(null);
         transaction.commit();
     }
-    public void modifyStoreDetail(String store_kind){
+    public void modifyStoreDetail(String user_id,  String store_kind, String menu_kind, String store, String locationX, String locationY){
         EditstoreFragment editstoreFragment = new EditstoreFragment();
         Bundle bundle = new Bundle();
+        bundle.putString("user_id", user_id);
         bundle.putString("store_kind", store_kind);
+        bundle.putString("menu_kind", menu_kind);
+        bundle.putString("store", store);
+        bundle.putString("locationX", locationX);
+        bundle.putString("locationY", locationY);
         editstoreFragment.setArguments(bundle);
         transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_frame, editstoreFragment);
