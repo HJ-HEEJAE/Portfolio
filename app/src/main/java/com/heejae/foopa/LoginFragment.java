@@ -3,6 +3,7 @@ package com.heejae.foopa;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -40,16 +41,26 @@ public class LoginFragment extends Fragment {
                 } else {
                     // 로그인 정보 체크
                     String[] result = db.checkLogin(user_id, user_password);
+                    String login_user_id = result[0];
                     // 로그인 성공
-                    if (result[0] != "") {
-                        Toast.makeText(getActivity(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                    if (login_user_id != "") {
+                        MyApplication myApp = (MyApplication) getActivity().getApplication();
+                        myApp.setLoggedUser(login_user_id); // 로그인 세션 방식으로 아이디를 전역변수로 설정
                         // 전달할 변수를 번들을 만들어 담기.
+                        Toast.makeText(getActivity(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+
                         Bundle bundle = new Bundle();
-                        bundle.putString("userId", result[0]); // key and value
+                        bundle.putString("userId", login_user_id); // key and value
                         bundle.putString("userName", result[1]); // key and value
+
                         UserpageFragment userpageFragment = new UserpageFragment();
                         userpageFragment.setArguments(bundle);  // fragment에 데이터(번들) 넘기기
-                        transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        transaction = fm.beginTransaction();
+                        // 백스택 비우기
+                        for (int i=0; i<fm.getBackStackEntryCount(); i++){
+                            fm.popBackStack();
+                        }
                         transaction.replace(R.id.main_frame, userpageFragment);
                         transaction.commit();
                     } else {

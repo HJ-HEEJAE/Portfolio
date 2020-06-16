@@ -6,8 +6,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.heejae.foopa.SQLite.DBHelper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,13 +27,20 @@ public class MainActivity extends AppCompatActivity {
     private TakeawayFragment takeawayFragment;
     private EathereFragment eathereFragment;
     private MypageFragment mypageFragment;
+    private UserpageFragment userpageFragment;
     private ListView listview;
+    private DBHelper db;
+    private MyApplication myApp;
+    private long backBtnTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = new DBHelper(this, "foopa.db", null, 1);
+        myApp = (MyApplication) getApplication(); // 어플리케이션 객체
 
         // 네비게이션
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -51,7 +60,12 @@ public class MainActivity extends AppCompatActivity {
                         setFragment(2);
                         break;
                     case R.id.navigation_mypage:
-                        setFragment(3);
+                        //if문 - 로그인 여부로
+                        if (myApp.getLoggedUser().length() == 0){
+                            setFragment(3);
+                        }else{
+                            setFragment(4);
+                        }
                         break;
                 }
                 return true;
@@ -61,57 +75,10 @@ public class MainActivity extends AppCompatActivity {
         takeawayFragment = new TakeawayFragment();
         eathereFragment = new EathereFragment();
         mypageFragment = new MypageFragment();
+        userpageFragment = new UserpageFragment();
         setFragment(0); //첫 화면을 home 프래그먼트로 지정
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home, R.id.navigation_takeaway, R.id.navigation_eathere, R.id.navigation_mypage)
-//                .build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//        NavigationUI.setupWithNavController(navView, navController);
-
-
-//    //마이페이지 리스트
-//        listview = (ListView)findViewById(R.id.mypage_list_re);
-//        List<String> list = new ArrayList<>();
-//        //리스트뷰와 리스트를 연결하기 위해 사용되는 어댑터
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-//                android.R.layout.activity_list_item, list);
-//        //리스트뷰의 어댑터를 지정
-//        listview.setAdapter(adapter);
-//
-//        list.add("로그인"); // sub에 회원가입 // 로그인 시 계정관리 메뉴
-//        list.add("나의 가게 정보 관리"); //업주의 경우 보이도록
-//        list.add("설정");
-//        list.add("고객센터");
-//        list.add("앱 정보");
-
-//        Button result_button = (Button)findViewById(R.id.result_button);
-//
-//        result_button.setOnClickListener(new View.OnClickListener(){
-
-//            public void selectSetting(View view) {
-//                final List<String> selectedItems = new ArrayList<>();
-//
-//                //리스트뷰에서 선택된 아이템의 목록을 가져온다.
-//                SparseBooleanArray checkedItemPositions = listview.getCheckedItemPositions();
-//                for( int i=0; i<checkedItemPositions.size(); i++){
-//                    int pos = checkedItemPositions.keyAt(i);
-//
-//                    if (checkedItemPositions.valueAt(i))
-//                    {
-//                        selectedItems.add(listview.getItemAtPosition(pos).toString());
-//                    }
-//                }
-//
-//                final CharSequence[] items = selectedItems.toArray(new String[selectedItems.size()]);
-
-//           }
-
     }
-
 
     // 프래그먼트 교체 메소드
     private void setFragment(int n) {
@@ -119,19 +86,32 @@ public class MainActivity extends AppCompatActivity {
         ft = fm.beginTransaction();
         switch (n) {
             case 0:
+                for(int i=0; i<fm.getBackStackEntryCount(); i++){
+                    fm.popBackStack();
+                }
                 ft.replace(R.id.main_frame, homeFragment);
                 ft.commit();
                 break;
             case 1:
+                for(int i=0; i<fm.getBackStackEntryCount(); i++){
+                    fm.popBackStack();
+                }
                 ft.replace(R.id.main_frame, takeawayFragment);
                 ft.commit();
                 break;
             case 2:
+                for(int i=0; i<fm.getBackStackEntryCount(); i++){
+                    fm.popBackStack();
+                }
                 ft.replace(R.id.main_frame, eathereFragment);
                 ft.commit();
                 break;
             case 3:
                 ft.replace(R.id.main_frame, mypageFragment);
+                ft.commit();
+                break;
+            case 4:
+                ft.replace(R.id.main_frame, userpageFragment);
                 ft.commit();
                 break;
         }
@@ -150,5 +130,28 @@ public class MainActivity extends AppCompatActivity {
 //            ft.commit();
         }
     }
+
+//    // 앱 종료 이벤트
+//    @Override
+//    public void onBackPressed() {
+//        long curTime = System.currentTimeMillis();
+//        long gapTime = curTime - backBtnTime;
+//
+//        if (fm.getBackStackEntryCount() == 0)
+//        {
+////            fm.popBackStack();
+////            ft.commit();
+////        } else {
+//            if (0 <= gapTime && 2000 >= gapTime) {
+//                super.onBackPressed();
+////                MyApplication myApp = (MyApplication) this.getApplication();
+////                myApp.setLoggedUser(""); // 로그인 세션 방식으로 아이디를 전역변수로 설정
+////                finish();
+//            } else {
+//                backBtnTime = curTime;
+//                Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
 }

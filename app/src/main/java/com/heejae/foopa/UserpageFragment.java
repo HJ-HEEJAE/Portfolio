@@ -20,6 +20,7 @@ import java.util.List;
 public class UserpageFragment extends Fragment {
 private View view;
 private FragmentTransaction transaction;
+private MyApplication myApp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,12 +28,22 @@ private FragmentTransaction transaction;
 
         // 로그인 성공한 유저의 정보 표시
         TextView tv_userinfo = (TextView)view.findViewById(R.id.userinfo); // textview 객체 가져오기
-        Bundle bundle = getArguments(); // 번들(데이터 - 유저 정보) 받기
-        if (bundle != null){
-            String userID = bundle.getString("userId");
-            String userName = bundle.getString("userName");
-            tv_userinfo.setText("안녕하세요! "+userName +"("+userID+")님");
+        myApp = (MyApplication) getActivity().getApplication(); // 어플리케이션 객체
+        if (myApp.getLoggedUser().length() == 0){
+            Toast.makeText(getActivity(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+            MypageFragment mypageFragment = new MypageFragment();
+            transaction.replace(R.id.main_frame, mypageFragment);
+            transaction.commit();
+        }else{
+            String loggedUser_id = myApp.getLoggedUser();
+            tv_userinfo.setText("안녕하세요! "+loggedUser_id+"님");
         }
+//        Bundle bundle = getArguments(); // 번들(데이터 - 유저 정보) 받기
+//        if (bundle != null){
+//            String userID = bundle.getString("userId");
+//            String userName = bundle.getString("userName");
+//            tv_userinfo.setText("안녕하세요! "+userName +"("+userID+")님");
+//        }
 
         // 로그인한 유저의 기능
         List<String> list = new ArrayList<>();
@@ -54,9 +65,16 @@ private FragmentTransaction transaction;
             String selected_item = (String)parent.getItemAtPosition(position);
 //                view = inflater.inflate(R.layout.fragment_login, container);
             if (selected_item.equals("나의 매장관리")){
-//                    loginView();
+                MystoreFragment mystoreFragment = new MystoreFragment();
+                transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.main_frame, mystoreFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
+
             if (selected_item.equals("로그아웃")){
+                MyApplication myApp = (MyApplication) getActivity().getApplication();
+                myApp.setLoggedUser(""); // 로그인 세션 방식으로 아이디를 전역변수로 설정 - 초기화
                 Toast.makeText(getActivity(), "로그아웃하였습니다.", Toast.LENGTH_SHORT).show();
                 MypageFragment mypageFragment = new MypageFragment();
                 transaction = getActivity().getSupportFragmentManager().beginTransaction();

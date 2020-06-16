@@ -8,10 +8,14 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.heejae.foopa.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.heejae.foopa.HomeFragment.keyword_All;
+import static com.heejae.foopa.TakeawayFragment.keyword_takeaway;
+import static com.heejae.foopa.EathereFragment.keyword_eathere;
 
 public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     public final static String USER_TABLE_NAME = "user";
@@ -29,6 +33,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     public final static String STORE_ID = "id";
     public final static String STORE_NAME = "store_name";
     public final static String MENU = "menu";
+    public final static String PRICE = "price";
     private SQLiteDatabase db;
 
     public DBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
@@ -43,7 +48,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
                                         + MENU_KIND + " text NOT NULL, " + STORE + " text NOT NULL, " + STORE_LOCATION_X + " real, "+ STORE_LOCATION_Y
                                         + " real, FOREIGN KEY("+USER_ID+") REFERENCES "+USER_TABLE_NAME+"("+USER_ID+"));";
         String create_store_query = "CREATE TABLE IF NOT exists "+ STORE_TABLE_NAME + "(" + STORE_ID + " integer PRIMARY KEY NOT NULL, " + USER_ID + " text NOT NULL, " + STORE_KIND + " text NOT NULL, "
-                                        + MENU_KIND + " text NOT NULL, " + STORE_NAME + " text NOT NULL, " + MENU + " text NOT NULL, FOREIGN KEY("+USER_ID+") REFERENCES "+USER_TABLE_NAME+"("+USER_ID+"));";
+                                        + MENU_KIND + " text NOT NULL, " + STORE_NAME + " text NOT NULL, " + MENU + " text NOT NULL, "+ PRICE +" text NOT NULL, FOREIGN KEY("+USER_ID+") REFERENCES "+USER_TABLE_NAME+"("+USER_ID+"));";
         db.execSQL(create_user_query);
         db.execSQL(create_wholestore_query);
         db.execSQL(create_store_query);
@@ -124,7 +129,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
             return new String[]{login_user_id, login_user_password};
         }else{
             cursor.close();
-            return new String[] {"", ""};
+            return new String[] {""};
         }
     }
 
@@ -146,6 +151,8 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
             return true;
         }
     }
+
+    //////////////////////(추후수정) 배열이 아닌 클래스 객체 사용으로 바꾸기/////////////////////////
 
     // 가게 select
     // Home 화면에서 넘어가는 카테고리 별 가게 목록
@@ -179,9 +186,10 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
                 store_kind = cursor.getString(cursor.getColumnIndex(STORE_KIND));
                 menu_kind = cursor.getString(cursor.getColumnIndex(MENU_KIND));
                 String store = cursor.getString(cursor.getColumnIndex(STORE));
-                String locationX = cursor.getString(cursor.getColumnIndex(STORE_LOCATION_X));
-                String locationY = cursor.getString(cursor.getColumnIndex(STORE_LOCATION_Y));
-                storelist.add(new String[] {id, user_id, store_kind, menu_kind, store, locationX, locationY});
+                Double locationX = cursor.getDouble(cursor.getColumnIndex(STORE_LOCATION_X));
+                Double locationY = cursor.getDouble(cursor.getColumnIndex(STORE_LOCATION_Y));
+//                storelist.add(new store(id, user_id, store_kind, menu_kind, store, locationX, locationY));
+                storelist.add(new String[] {id, user_id, store_kind, menu_kind, store, locationX.toString(), locationY.toString()});
             }
             cursor.close();
             return storelist;
@@ -192,7 +200,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     }
 
     // 메뉴 추가
-    public boolean menuInsert(String user_id, String store_kind, String menu_kind, String store, String[] menu) {
+    public boolean menuInsert(String user_id, String store_kind, String menu_kind, String store, String[] menu, int[] price) {
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USER_ID, user_id);
@@ -201,29 +209,32 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         values.put(STORE_NAME, store);
         for (int i=0; i<menu.length; i++){
             values.put(MENU, menu[i]);
+            values.put(PRICE, price[i]);
             long ins = db.insert(STORE_TABLE_NAME, null, values);
             Log.d("insert menu", "id: "+ins);
             if (ins == -1){
                 return false;
             }else{
-                values.remove(MENU);    // initialize menu key for next menu.
+                // initialize menu and price keys for next menu.
+                values.remove(MENU);
+                values.remove(PRICE);
                 return true;
             }
         }
         return true;
     }
 
-    // 가게정보(메뉴) select by store_kind(포장/매장), menu_kind(메뉴카테고리)
+    // 매장메뉴 select by store_kind(포장/매장)
     // 2차원 배열리스트 개념
-    public ArrayList<String[]> getStore(String user_id, String store_kind, String menu_kind){
+    public ArrayList<String[]> getStore(String user_id, String store_kind){
         db = this.getReadableDatabase();
         Cursor cursor = null;
         // Home - 전체(포장/매장)
         if (store_kind.equals("all")){
-            cursor = db.rawQuery("SELECT * FROM store WHERE user_id = ? AND menu_kind = ?", new String[] {user_id, menu_kind});
+            cursor = db.rawQuery("SELECT * FROM store WHERE user_id = ?", new String[] {user_id});
         // 포장 or 매장
         }else{
-            cursor = db.rawQuery("SELECT * FROM store WHERE user_id = ? AND store_kind = ? AND menu_kind = ?", new String[] {user_id, store_kind, menu_kind});
+            cursor = db.rawQuery("SELECT * FROM store WHERE user_id = ? AND store_kind = ?", new String[] {user_id, store_kind});
         }
 
         ArrayList<String[]> storeInfo = new ArrayList<String[]>();
@@ -232,10 +243,11 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
                 String id = cursor.getString(cursor.getColumnIndex(STORE_ID));
                 user_id = cursor.getString(cursor.getColumnIndex(USER_ID));
                 store_kind = cursor.getString(cursor.getColumnIndex(STORE_KIND));
-                menu_kind = cursor.getString(cursor.getColumnIndex(MENU_KIND));
+                String menu_kind = cursor.getString(cursor.getColumnIndex(MENU_KIND));
                 String store = cursor.getString(cursor.getColumnIndex(STORE_NAME));
                 String menu = cursor.getString(cursor.getColumnIndex(MENU));
-                storeInfo.add(new String[] {id, user_id, store_kind, menu_kind, store, menu});
+                String price = cursor.getString(cursor.getColumnIndex(PRICE));
+                storeInfo.add(new String[] {id, user_id, store_kind, menu_kind, store, menu, price});
             }
             cursor.close();
             return storeInfo;
@@ -245,4 +257,57 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         }
     }
 
+    // 해당 유저의 등록된 매장의 영업타입 확인
+    public String[] isStore(String user_id){
+        db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT store_kind FROM wholestore WHERE user_id = ?", new String[] {user_id});
+        // 유저 존재 체크
+        if (cursor.getCount() > 0){
+            String [] store_kind_Arr = {"N", "N"};
+            while (cursor.moveToNext()) {
+                Log.d("cursor", cursor.toString());
+                String store_kind = cursor.getString(cursor.getColumnIndex(STORE_KIND));
+                Log.d("store_kind", store_kind);
+                if (store_kind.equals(keyword_takeaway)){
+                    store_kind_Arr[0] = keyword_takeaway;
+                } else if (store_kind.equals(keyword_eathere)){
+                    store_kind_Arr[1] = keyword_eathere;
+                }
+            }
+            cursor.close();;
+            return store_kind_Arr;
+        }else{
+            cursor.close();
+            return new String[] {""};
+        }
+    }
+
+    // 매장정보 가져오기
+    public String[] getStoreInfo(String user_id, String store_kind){
+        db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM wholestore WHERE user_id = ? AND store_kind = ?", new String[] {user_id, store_kind});
+        // 유저 존재 체크
+        if (cursor.getCount() > 0){
+            String id = "";
+            String menu_kind = "";
+            String store = "";
+            Double locationX = 0.0;
+            Double locationY = 0.0;
+            while (cursor.moveToNext()) {
+                Log.d("userY", cursor.getString(cursor.getColumnIndex(STORE)));
+                id = cursor.getString(cursor.getColumnIndex(WHOLE_ID));
+                user_id = cursor.getString(cursor.getColumnIndex(USER_ID));
+                store_kind = cursor.getString(cursor.getColumnIndex(STORE_KIND));
+                menu_kind = cursor.getString(cursor.getColumnIndex(MENU_KIND));
+                store = cursor.getString(cursor.getColumnIndex(STORE));
+                locationX = cursor.getDouble(cursor.getColumnIndex(STORE_LOCATION_X));
+                locationY = cursor.getDouble(cursor.getColumnIndex(STORE_LOCATION_Y));
+            }
+            cursor.close();
+            return new String[] {id, user_id, store_kind, menu_kind, store, locationX.toString(), locationY.toString()};
+        }else{
+            cursor.close();
+            return new String[] {""};
+        }
+    }
 }

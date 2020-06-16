@@ -95,6 +95,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         private String userId; // unique key
         private String storeName;
         private String storeContent;
+        private String storeKind;
         private int resId;
 
         //        Data(String storeName, String storeContent, int resId){
@@ -121,6 +122,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         }
         public String getStoreContent() {
             return storeContent;
+        }
+        public void setStoreKind(String storeKind) {
+            this.storeKind = storeKind;
+        }
+        public String getStoreKind() {
+            return storeKind;
         }
 
         public int getResId() {

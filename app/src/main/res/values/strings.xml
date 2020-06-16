@@ -5,6 +5,7 @@
     <string name="title_eathere">매장식사</string>
     <string name="title_mypage">마이페이지</string>
     <string name="title_location_setting">위치설정</string>
+    <string name="keyword_location">위치</string>
     <string name="map_view">지도보기</string>
 
     <string name="menu_all">전체</string>
@@ -20,6 +21,16 @@
     <string name="store_image">매장아이콘</string>
     <string name="store_name">매장이름</string>
     <string name="store_content">매장정보</string>
+
+    <string name="add_ta_store">포장매장추가</string>
+    <string name="add_eh_store">식사매장추가</string>
+    <string name="edit_ta_store">포장매장편집</string>
+    <string name="edit_eh_store">식사매장편집</string>
+    <string name="add_menu">메뉴추가</string>
+
+    <string name="takeAway">포장</string>
+    <string name="eatHere">매장</string>
+    <string name="currency_won">원</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
