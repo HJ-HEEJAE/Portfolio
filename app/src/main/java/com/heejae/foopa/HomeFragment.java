@@ -5,9 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -18,14 +15,15 @@ import androidx.fragment.app.FragmentTransaction;
 import com.heejae.foopa.SQLite.DBHelper;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static com.heejae.foopa.MainActivity.keyword_All;
 
 public class HomeFragment extends Fragment {
     private View view;
     private DBHelper db;
     private FragmentTransaction transaction;
     private ArrayList<String[]> resultList = new ArrayList<String[]>();
-    public static String keyword_All = "All";
+//    public static String keyword_All = "All";
 //    private Integer[] imgArr;
 //    public enum gridItem {
 //        MENU_ALL, MENU_STREET, MENU_KO, MENU_WEST, MENU_CH, MENU_JP, MENU_SNACK, MENU_DRINK, MENU_ETC

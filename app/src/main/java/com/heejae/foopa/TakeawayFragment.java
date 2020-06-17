@@ -16,14 +16,15 @@ import com.heejae.foopa.SQLite.DBHelper;
 
 import java.util.ArrayList;
 
-import static com.heejae.foopa.HomeFragment.keyword_All;
+import static com.heejae.foopa.MainActivity.keyword_All;
+import static com.heejae.foopa.MainActivity.keyword_takeaway;
 
 public class TakeawayFragment extends Fragment {
     private View view;
     private DBHelper db;
     private FragmentTransaction transaction;
     private ArrayList<String[]> resultList = new ArrayList<String[]>();
-    public static String keyword_takeaway = "포장";
+//    public static String keyword_takeaway = "포장";
 
     @Nullable
     @Override

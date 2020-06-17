@@ -4,20 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.heejae.foopa.SQLite.DBHelper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.heejae.foopa.SQLite.DBHelper;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
@@ -32,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private DBHelper db;
     private MyApplication myApp;
     private long backBtnTime = 0;
+    public static String keyword_All = "All";
+    public static String keyword_takeaway = "포장";
+    public static String keyword_eathere = "매장";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

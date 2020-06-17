@@ -8,14 +8,11 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.heejae.foopa.R;
-
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.heejae.foopa.HomeFragment.keyword_All;
-import static com.heejae.foopa.TakeawayFragment.keyword_takeaway;
-import static com.heejae.foopa.EathereFragment.keyword_eathere;
+import static com.heejae.foopa.MainActivity.keyword_All;
+import static com.heejae.foopa.MainActivity.keyword_takeaway;
+import static com.heejae.foopa.MainActivity.keyword_eathere;
 
 public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     public final static String USER_TABLE_NAME = "user";

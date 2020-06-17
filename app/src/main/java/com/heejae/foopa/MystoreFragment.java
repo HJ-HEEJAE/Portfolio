@@ -1,31 +1,24 @@
 package com.heejae.foopa;
 
-import android.app.Application;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.heejae.foopa.SQLite.DBHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import static com.heejae.foopa.HomeFragment.keyword_All;
 
 public class MystoreFragment extends Fragment {
     private View view;
