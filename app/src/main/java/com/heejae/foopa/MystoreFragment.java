@@ -25,6 +25,7 @@ public class MystoreFragment extends Fragment {
     private DBHelper db;
     private MyApplication myApp;
     private FragmentTransaction transaction;
+    private String user_id;
     private String[] storeInfo;
 
     // 포장, 매장 각각 등록된 매장 있는 경우 매장추가 비활성화/매장보이기
@@ -45,7 +46,7 @@ public class MystoreFragment extends Fragment {
 //        ehContent.setVisibility(View.INVISIBLE);
 
         // 로그인 더블 체크 & 포장 or 매장식사 등록 확인
-        final String user_id = myApp.getLoggedUser();
+        user_id = myApp.getLoggedUser();
         Log.d("user_id", user_id);
         if (user_id.length() == 0){
             Toast.makeText(getActivity(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
@@ -54,9 +55,15 @@ public class MystoreFragment extends Fragment {
             transaction.commit();
         } else {
             String[] store_kind_Arr = db.isStore(user_id);
-            Log.d(store_kind_Arr[0], store_kind_Arr[1]);
-            String takeAway = store_kind_Arr[0];
-            String eatHere = store_kind_Arr[1];
+            String takeAway = "";
+            String eatHere = "";
+            if (store_kind_Arr.length < 2){
+                Log.d("mystore_", "error");
+            }else{
+                takeAway = store_kind_Arr[0];
+                eatHere = store_kind_Arr[1];
+            }
+
             // 포장
             if (takeAway.equals(getString(R.string.takeAway))){
                 addTaStoreBtn.setEnabled(false);
@@ -168,6 +175,7 @@ public class MystoreFragment extends Fragment {
     }
 
     public void inputStoreDetail(String user_id, String store_kind){
+        Log.d("inputuser", user_id);
         AddstoreFragment addstoreFragment = new AddstoreFragment();
         Bundle bundle = new Bundle();
         bundle.putString("user_id", user_id);

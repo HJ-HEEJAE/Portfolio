@@ -273,7 +273,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
             return store_kind_Arr;
         }else{
             cursor.close();
-            return new String[] {""};
+            return new String[] {"", ""};
         }
     }
 

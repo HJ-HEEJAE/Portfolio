@@ -10,7 +10,7 @@
         android:id="@+id/store_user_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="90dp"
         android:ems="10"
         android:hint="아이디"
         android:inputType="textPersonName"
@@ -30,16 +30,12 @@
         app:layout_constraintStart_toStartOf="@+id/store_user_id"
         app:layout_constraintTop_toBottomOf="@+id/store_user_id" />
 
-    <EditText
+    <Spinner
         android:id="@+id/add_store_menu_kind"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="메뉴종류"
-        android:inputType="textPersonName"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="@+id/add_store_kind"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/add_store_kind"
         app:layout_constraintTop_toBottomOf="@+id/add_store_kind" />
 
@@ -47,7 +43,7 @@
         android:id="@+id/add_store_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="매장명"
         android:inputType="textPersonName"
@@ -88,4 +84,5 @@
         app:layout_constraintEnd_toEndOf="@+id/add_store_loc_y"
         app:layout_constraintStart_toStartOf="@+id/add_store_loc_y"
         app:layout_constraintTop_toBottomOf="@+id/add_store_loc_y" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

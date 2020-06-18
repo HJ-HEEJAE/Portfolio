@@ -33,7 +33,7 @@ public class EathereFragment extends Fragment {
         db = new DBHelper(getActivity(), "foopa.db", null, 1);
 
         ImageButton ibMenuAll = view.findViewById(R.id.menu_all);
-//        ImageButton ibMenuStreet = view.findViewById(R.id.menu_street);
+        ImageButton ibMenuStreet = view.findViewById(R.id.menu_street);
         ImageButton ibMenuKo = view.findViewById(R.id.menu_ko);
         ImageButton ibMenuWest = view.findViewById(R.id.menu_western);
         ImageButton ibMenuCh = view.findViewById(R.id.menu_ch);
@@ -49,13 +49,13 @@ public class EathereFragment extends Fragment {
                 renderList(resultList, "전체보기");
             }
         });
-//        ibMenuStreet.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                resultList = db.getStores(keyword_eathere, "스트릿");
-//                renderList(resultList, "스트릿");
-//            }
-//        });
+        ibMenuStreet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resultList = db.getStores(keyword_eathere, "스트릿");
+                renderList(resultList, "스트릿");
+            }
+        });
         ibMenuKo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -121,6 +121,18 @@
                             app:srcCompat="@drawable/ic_eat_4461470" />
 
                         <ImageButton
+                            android:id="@+id/menu_street"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="fill"
+                            android:layout_weight="1"
+                            android:background="#BFE3E2E2"
+                            android:contentDescription="@string/menu_street"
+                            android:padding="3dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/ic_bbq_streetfood" />
+
+                        <ImageButton
                             android:id="@+id/menu_ko"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
