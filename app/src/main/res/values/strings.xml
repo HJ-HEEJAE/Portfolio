@@ -27,6 +27,8 @@
     <string name="edit_ta_store">포장매장편집</string>
     <string name="edit_eh_store">식사매장편집</string>
     <string name="add_menu">메뉴추가</string>
+    <string name="adding">추가</string>
+    <string name="edit_complete">편집완료</string>
 
     <string name="takeAway">포장</string>
     <string name="eatHere">매장</string>

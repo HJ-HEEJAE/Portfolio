@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="추가"
+        android:text="@string/adding"
         app:layout_constraintEnd_toEndOf="@+id/add_store_loc_y"
         app:layout_constraintStart_toStartOf="@+id/add_store_loc_y"
         app:layout_constraintTop_toBottomOf="@+id/add_store_loc_y" />

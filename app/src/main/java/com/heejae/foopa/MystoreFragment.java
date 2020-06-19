@@ -70,6 +70,7 @@ public class MystoreFragment extends Fragment {
                 // 등록된 포장매장 표시
                 showStoreInfo(user_id, getString(R.string.takeAway), view);
                 // 편집 버튼 클릭이벤트
+                Log.d("storeinfo_id ", storeInfo[3]);
                 Button editTaStoreBtn = view.findViewById(R.id.edit_ta_btn);
                 editTaStoreBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -188,6 +189,7 @@ public class MystoreFragment extends Fragment {
     }
     public void modifyStoreDetail(String user_id,  String store_kind, String menu_kind, String store, String locationX, String locationY){
         EditstoreFragment editstoreFragment = new EditstoreFragment();
+        Log.d("modi_id ", menu_kind);
         Bundle bundle = new Bundle();
         bundle.putString("user_id", user_id);
         bundle.putString("store_kind", store_kind);
