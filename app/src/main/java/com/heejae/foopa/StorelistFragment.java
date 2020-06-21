@@ -25,12 +25,10 @@ public class StorelistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_storelist, container, false);
 
-        Log.d("3", "c");
         // (Linear)LayoutManager와 Adapter를 RecyclerView에 연결
         init();
 
         getData();
-        Log.d("1", "a");
 
         return view;
     }
@@ -46,7 +44,6 @@ public class StorelistFragment extends Fragment {
     }
     // DB에서 가져온 데이터를 리스트에 넣어서 그리기
     private void getData(){
-        Log.d("2", "b");
         resultList.clear(); // initialize
         Bundle bundle = getArguments();
         for (int i=0; i<bundle.size()-1; i++) {

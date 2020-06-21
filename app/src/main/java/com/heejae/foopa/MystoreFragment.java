@@ -33,6 +33,7 @@ public class MystoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mystore, container, false);
         db = new DBHelper(getActivity(), "foopa.db", null, 1);
+        // 전역변수 사용위해 어플리케이션 클래스 가져오기
         myApp = (MyApplication) getActivity().getApplication();
 
         Button addTaStoreBtn = view.findViewById(R.id.add_ta_store_btn);
@@ -40,8 +41,15 @@ public class MystoreFragment extends Fragment {
 
         LinearLayout taContent = view.findViewById(R.id.ta_frame);
         LinearLayout ehContent = view.findViewById(R.id.eh_frame);
+        TextView ta_title = view.findViewById(R.id.ta_title);
+        TextView eh_title = view.findViewById(R.id.eh_title);
+        ListView lv_ta = view.findViewById(R.id.ta_menu_list);
+        ListView lv_eh = view.findViewById(R.id.eh_menu_list);
+
         taContent.setEnabled(false);
         ehContent.setEnabled(false);
+        ta_title.setText("[포장] 매장을 등록해주세요.");
+        eh_title.setText("[매장] 매장을 등록해주세요.");
 //        taContent.setVisibility(View.INVISIBLE);
 //        ehContent.setVisibility(View.INVISIBLE);
 
@@ -78,9 +86,10 @@ public class MystoreFragment extends Fragment {
                         modifyStoreDetail(user_id, getString(R.string.takeAway), storeInfo[3], storeInfo[4], storeInfo[5], storeInfo[6]);
                     }
                 });
-                LinearLayout.LayoutParams taParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, taContent.getHeight());
+                // 리스트 크기 조절
+                LinearLayout.LayoutParams taParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lv_ta.getHeight());
                 taParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                taContent.setLayoutParams(taParams);
+                lv_ta.setLayoutParams(taParams);
 //                taParams.height = 1000;
 //                taContent.setEnabled(true);
 //                taContent.setVisibility(View.VISIBLE);
@@ -108,9 +117,10 @@ public class MystoreFragment extends Fragment {
                         modifyStoreDetail(user_id, getString(R.string.eatHere), storeInfo[3], storeInfo[4], storeInfo[5], storeInfo[6]);
                     }
                 });
-                LinearLayout.LayoutParams ehParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ehContent.getHeight());
+                // 리스트 크기 조절
+                LinearLayout.LayoutParams ehParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, lv_eh.getHeight());
                 ehParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                ehContent.setLayoutParams(ehParams);
+                lv_eh.setLayoutParams(ehParams);
 //                ehParams.height = 1000;
 //                ehContent.setEnabled(true);
 //                ehContent.setVisibility(View.VISIBLE);
@@ -155,17 +165,20 @@ public class MystoreFragment extends Fragment {
 //        List<String> list = new ArrayList<>();
         ArrayList<String[]> storeInfo = db.getStore(user_id, store_kind);
         ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> item = new HashMap<String, String>();
-        SimpleAdapter adapter = new SimpleAdapter(view.getContext(), list, android.R.layout.simple_list_item_2, new String[]{"menu_name", "menu_price"}, new int[]{android.R.id.text1, android.R.id.text2});
+
         for (int i=0; i<storeInfo.size(); i++){
+            Log.d("e ",storeInfo.get(i)[5]+storeInfo.get(i)[6]);
             // String[] storeMenu = storeInfo.get(i);
 //            list.add(storeInfo.get(i)[5]);
             // 메뉴, 리스트 추가
+            HashMap<String, String> item = new HashMap<>();
             item.put("menu_name", storeInfo.get(i)[5]);
             item.put("menu_price", storeInfo.get(i)[6]+getString(R.string.currency_won));
             list.add(item);
+//            Log.d("ii", list.get(i).values().toString());
         }
-
+        // ListView adapter
+        SimpleAdapter adapter = new SimpleAdapter(getActivity(), list, android.R.layout.simple_list_item_2, new String[]{"menu_name", "menu_price"}, new int[]{android.R.id.text1, android.R.id.text2});
         if (store_kind.equals(getString(R.string.takeAway))){
             ListView menu_list = view.findViewById(R.id.ta_menu_list);
             menu_list.setAdapter(adapter);

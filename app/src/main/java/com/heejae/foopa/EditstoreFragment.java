@@ -19,6 +19,7 @@ public class EditstoreFragment extends Fragment {
     private View view;
     private DBHelper db;
     String menu;
+    String str_price;
     int price;
     String user_id;
     String store_kind;
@@ -39,9 +40,6 @@ public class EditstoreFragment extends Fragment {
         store = bundle.getString("store");
         String location_x = bundle.getString("locationX");
         String location_y = bundle.getString("locationY");
-        Log.d("userid ", user_id);
-        Log.d("x ", location_x);
-        Log.d("y ", location_y);
         locationX = Double.parseDouble(location_x);
         locationY = Double.parseDouble(location_y);
 
@@ -65,7 +63,7 @@ public class EditstoreFragment extends Fragment {
 
         store_user_id.setEnabled(false);
         edit_store_kind.setEnabled(false);
-//        edit_store_menu_kind.setEnabled(false);
+        edit_store_menu_kind.setEnabled(false);
         edit_store_name.setEnabled(false);
         edit_store_loc_x.setEnabled(false);
         edit_store_loc_y.setEnabled(false);
@@ -78,13 +76,26 @@ public class EditstoreFragment extends Fragment {
                 TextView store_menu = view.findViewById(R.id.store_menu);
                 TextView store_price = view.findViewById(R.id.store_price);
                 menu = store_menu.getText().toString();
-                String str_price = store_price.getText().toString();
-                price = Integer.parseInt(str_price);
-                boolean result = db.menuInsert(user_id, store_kind, menu_kind, store, menu, price);
-                if (result){
-                    Toast.makeText(getActivity(), "매장정보가 업데이트 되었습니다.", Toast.LENGTH_SHORT).show();
+                str_price = store_price.getText().toString();
+                if (menu.length() != 0 && str_price.length() != 0){
+                    try{
+                        price = Integer.parseInt(str_price);
+                    }catch (Exception e){
+                        Toast.makeText(getActivity(), "올바른 데이터를 입력하십시오 : 가격", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    boolean result = db.menuInsert(user_id, store_kind, menu_kind, store, menu, price);
+                    if (result) {
+                        Toast.makeText(getActivity(), "메뉴가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getActivity(), "메뉴 업데이트에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
                     getActivity().onBackPressed();
+                }else{
+                    Toast.makeText(getActivity(), "모든 정보를 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 

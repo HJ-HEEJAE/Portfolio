@@ -41,10 +41,10 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Create Table
         String create_user_query = "CREATE TABLE IF NOT exists " + USER_TABLE_NAME + "(" + USER_ID + " text PRIMARY KEY NOT NULL, " + PASSWORD + " text NOT NULL, " + USER_NAME + " text NOT NULL);";
-        String create_wholestore_query = "CREATE TABLE IF NOT exists "+ WHOLE_STORE_TABLE_NAME + "(" + WHOLE_ID + " integer PRIMARY KEY NOT NULL, " + USER_ID + " text NOT NULL, " + STORE_KIND + " text NOT NULL, "
+        String create_wholestore_query = "CREATE TABLE IF NOT exists "+ WHOLE_STORE_TABLE_NAME + "(" + WHOLE_ID + " integer PRIMARY KEY AUTOINCREMENT NOT NULL, " + USER_ID + " text NOT NULL, " + STORE_KIND + " text NOT NULL, "
                                         + MENU_KIND + " text NOT NULL, " + STORE + " text NOT NULL, " + STORE_LOCATION_X + " real, "+ STORE_LOCATION_Y
                                         + " real, FOREIGN KEY("+USER_ID+") REFERENCES "+USER_TABLE_NAME+"("+USER_ID+"));";
-        String create_store_query = "CREATE TABLE IF NOT exists "+ STORE_TABLE_NAME + "(" + STORE_ID + " integer PRIMARY KEY NOT NULL, " + USER_ID + " text NOT NULL, " + STORE_KIND + " text NOT NULL, "
+        String create_store_query = "CREATE TABLE IF NOT exists "+ STORE_TABLE_NAME + "(" + STORE_ID + " integer PRIMARY KEY AUTOINCREMENT NOT NULL, " + USER_ID + " text NOT NULL, " + STORE_KIND + " text NOT NULL, "
                                         + MENU_KIND + " text NOT NULL, " + STORE_NAME + " text NOT NULL, " + MENU + " text NOT NULL, "+ PRICE +" text NOT NULL, FOREIGN KEY("+USER_ID+") REFERENCES "+USER_TABLE_NAME+"("+USER_ID+"));";
         db.execSQL(create_user_query);
         db.execSQL(create_wholestore_query);
@@ -151,8 +151,8 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
 
     //////////////////////(추후수정) 배열이 아닌 클래스 객체 사용으로 바꾸기/////////////////////////
 
-    // 가게 select
-    // Home 화면에서 넘어가는 카테고리 별 가게 목록
+    // 매장 select
+    // Home 화면에서 넘어가는 카테고리 별 매장 목록
     public ArrayList<String[]> getStores(String store_kind, String menu_kind){
         db = this.getReadableDatabase();
         Cursor cursor = null;
@@ -213,8 +213,6 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
             return false;
         }else{
             // initialize menu and price keys for next menu.
-            values.remove(MENU);
-            values.remove(PRICE);
             return true;
         }
     }

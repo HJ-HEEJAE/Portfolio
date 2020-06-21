@@ -30,7 +30,8 @@
             android:id="@+id/store_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp">
+            android:layout_marginTop="48dp"
+            android:backgroundTint="#EDFFD7">
 
         </androidx.recyclerview.widget.RecyclerView>
 

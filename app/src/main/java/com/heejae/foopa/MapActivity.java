@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap gMap;
+    MyApplication myApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -25,13 +26,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap){
         gMap = googleMap;
+        myApp = (MyApplication) this.getApplication();
 
-        LatLng seoul = new LatLng(37.588227, 126.9914173);
+        // Default location
+        LatLng location_here = new LatLng(37.588227, 126.9914173);
+        double loc_x = myApp.getlocationX();
+        double loc_y = myApp.getlocationY();
+        if (loc_x != 0.0 && loc_y != 0.0){
+            location_here = new LatLng(loc_x, loc_y);
+        }
+
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title("Seoul");
-        markerOptions.position(seoul);
+        markerOptions.title("My location");
+        markerOptions.position(location_here);
         gMap.addMarker(markerOptions);
 //        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(seoul, 16));
-        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(seoul, 16));
+        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location_here, 16));
     }
 }

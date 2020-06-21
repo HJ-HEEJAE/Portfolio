@@ -1,12 +1,19 @@
 package com.heejae.foopa;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,9 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private EathereFragment eathereFragment;
     private MypageFragment mypageFragment;
     private UserpageFragment userpageFragment;
+    private AddressFragment addressFragment;
     private ListView listview;
     private DBHelper db;
-    private MyApplication myApp;
+    MyApplication myApp;
     private long backBtnTime = 0;
     public static String keyword_All = "All";
     public static String keyword_takeaway = "포장";
@@ -74,8 +82,27 @@ public class MainActivity extends AppCompatActivity {
         eathereFragment = new EathereFragment();
         mypageFragment = new MypageFragment();
         userpageFragment = new UserpageFragment();
+        addressFragment = new AddressFragment();
         setFragment(0); //첫 화면을 home 프래그먼트로 지정
 
+        // 주소 설정
+        Button address_btn = findViewById(R.id.set_address_Btn);
+        double loc_x = myApp.getlocationX();
+        double loc_y = myApp.getlocationY();
+        Log.d("loc", loc_x+""+loc_y);
+        if (loc_x != 0.0 && loc_y != 0.0){
+            String locationX = Double.toString(loc_x);
+            String locationY = Double.toString(loc_y);
+            address_btn.setText(locationX+", "+locationY);
+        }
+
+        address_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                address_btn.setText("ok");
+                setFragment(5);
+            }
+        });
     }
 
     // 프래그먼트 교체 메소드
@@ -110,6 +137,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 4:
                 ft.replace(R.id.main_frame, userpageFragment);
+                ft.commit();
+                break;
+            case 5:
+                ft.replace(R.id.main_frame, addressFragment);
+//                ft.addToBackStack(null);
                 ft.commit();
                 break;
         }

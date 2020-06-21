@@ -19,7 +19,8 @@ public class AddstoreFragment extends Fragment {
     private DBHelper db;
     String user_id;
     String store_kind;
-    String menu_kind;
+//    String menu_kind;
+    Spinner menu_kind_spinner;
     String store;
     double locationX;
     double locationY;
@@ -39,11 +40,10 @@ public class AddstoreFragment extends Fragment {
         store_user_id.setEnabled(false);
         add_store_kind.setEnabled(false);
 
-        Spinner menu_kind_spinner = (Spinner) view.findViewById(R.id.add_store_menu_kind);
+        menu_kind_spinner = (Spinner) view.findViewById(R.id.add_store_menu_kind);
         final ArrayAdapter menu_kind_adapter = ArrayAdapter.createFromResource(getActivity(), R.array.menu_kind_arr, android.R.layout.simple_spinner_item);
         menu_kind_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         menu_kind_spinner.setAdapter(menu_kind_adapter);
-        menu_kind = menu_kind_spinner.getSelectedItem().toString();
 
 //        menu_kind_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -67,7 +67,8 @@ public class AddstoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                TextView add_store_menu_kind = view.findViewById(R.id.add_store_menu_kind);
-//                Spinner menu_kind_spinner = v.findViewById(R.id.add_store_menu_kind);
+//                Spinner menu_kind_spinner = view.findViewById(R.id.add_store_menu_kind);
+                String menu_kind = menu_kind_spinner.getSelectedItem().toString();
                 TextView add_store_name = view.findViewById(R.id.add_store_name);
                 TextView add_store_loc_x = view.findViewById(R.id.add_store_loc_x);
                 TextView add_store_loc_y = view.findViewById(R.id.add_store_loc_y);
@@ -75,13 +76,27 @@ public class AddstoreFragment extends Fragment {
 //                String store_kind = add_store_kind.getText().toString();
 //                String menu_kind = menu_kind_spinner.getText().toString();
                 String store = add_store_name.getText().toString();
-                double locationX = Double.parseDouble(add_store_loc_x.getText().toString());
-                double locationY = Double.parseDouble(add_store_loc_y.getText().toString());
-                boolean result = db.storeInsert(user_id, store_kind, menu_kind, store, locationX, locationY);
-                if (result){
-                    Toast.makeText(getActivity(), "매장이 추가 되었습니다.", Toast.LENGTH_SHORT).show();
-                    // 뒤로가기
+                String loc_x = add_store_loc_x.getText().toString();
+                String loc_y = add_store_loc_y.getText().toString();
+
+                if (store.length() != 0 && loc_x.length() != 0 && loc_y.length() != 0){
+                    try{
+                        locationX = Double.parseDouble(add_store_loc_x.getText().toString());
+                        locationY = Double.parseDouble(add_store_loc_y.getText().toString());
+                    }catch (Exception e){
+                        Toast.makeText(getActivity(), "올바른 데이터를 입력하십시오 : 위치", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    boolean result = db.storeInsert(user_id, store_kind, menu_kind, store, locationX, locationY);
+                    if (result) {
+                        Toast.makeText(getActivity(), "매장이 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getActivity(), "메장 추가에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
                     getActivity().onBackPressed();
+                }else{
+                    Toast.makeText(getActivity(), "모든 정보를 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
