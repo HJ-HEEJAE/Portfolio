@@ -29,7 +29,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         myApp = (MyApplication) this.getApplication();
 
         // Default location
-        LatLng location_here = new LatLng(37.588227, 126.9914173);
+        LatLng location_here = new LatLng(37.588967, 126.9920299);
         double loc_x = myApp.getlocationX();
         double loc_y = myApp.getlocationY();
         if (loc_x != 0.0 && loc_y != 0.0){

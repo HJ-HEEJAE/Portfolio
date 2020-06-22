@@ -7,124 +7,134 @@
     android:layout_height="match_parent"
     tools:context=".MystoreFragment">
 
-    <LinearLayout
-        android:id="@+id/store_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/adding_btn_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/add_ta_store_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#CDDC39"
-                android:text="@string/add_ta_store" />
-
-            <Button
-                android:id="@+id/add_eh_store_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#CDDC39"
-                android:text="@string/add_eh_store" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ta_frame"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="9dp"
-            android:background="#FFEFD8"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:nestedScrollingEnabled="true">
 
-            <TextView
-                android:id="@+id/ta_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textColor="#000000"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/ta_address"
+            <LinearLayout
+                android:id="@+id/store_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                android:isScrollContainer="true"
+                android:nestedScrollingEnabled="true"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/edit_ta_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="2dp"
-                android:backgroundTint="#FFC107"
-                android:text="@string/add_menu" />
+                <LinearLayout
+                    android:id="@+id/adding_btn_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <ListView
-                android:id="@+id/ta_menu_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:background="#80FFEF66"
-                android:isScrollContainer="false" />
+                    <Button
+                        android:id="@+id/add_ta_store_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#CDDC39"
+                        android:text="@string/add_ta_store" />
 
-        </LinearLayout>
+                    <Button
+                        android:id="@+id/add_eh_store_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#CDDC39"
+                        android:text="@string/add_eh_store" />
 
-        <LinearLayout
-            android:id="@+id/eh_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="9dp"
-            android:background="#FFEFD8"
-            android:orientation="vertical"
-            android:padding="10dp">
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/eh_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textColor="#000000"
-                android:textSize="24sp" />
+                <LinearLayout
+                    android:id="@+id/ta_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="#FFEFD8"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-            <TextView
-                android:id="@+id/eh_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                    <TextView
+                        android:id="@+id/ta_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:textColor="#000000"
+                        android:textSize="24sp" />
 
-            <Button
-                android:id="@+id/edit_eh_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="2dp"
-                android:backgroundTint="#FFC107"
-                android:text="@string/add_menu" />
+                    <TextView
+                        android:id="@+id/ta_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp" />
 
-            <ListView
-                android:id="@+id/eh_menu_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:background="#80FFEF66"
-                android:isScrollContainer="false" />
+                    <Button
+                        android:id="@+id/edit_ta_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="2dp"
+                        android:backgroundTint="#FFC107"
+                        android:text="@string/add_menu" />
 
-        </LinearLayout>
+                    <ListView
+                        android:id="@+id/ta_menu_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="#80FFEF66"
+                        android:isScrollContainer="false" />
 
-    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/eh_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="#FFEFD8"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/eh_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:textColor="#000000"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/eh_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp" />
+
+                    <Button
+                        android:id="@+id/edit_eh_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="2dp"
+                        android:backgroundTint="#FFC107"
+                        android:text="@string/add_menu" />
+
+                    <ListView
+                        android:id="@+id/eh_menu_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="#80FFEF66"
+                        android:isScrollContainer="false" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
