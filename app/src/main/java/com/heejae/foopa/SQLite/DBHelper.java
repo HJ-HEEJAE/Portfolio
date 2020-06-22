@@ -76,6 +76,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         values.put(USER_NAME, user_name);
 //        String insert_query = "INSERT INTO " + TABLE_NAME + "("+ ID +","+PASSWORD+","+NAME+") VALUES ("+user_id+","+user_password+","+user_name+")";
         long ins = db.insert(USER_TABLE_NAME, null, values);
+        db.close();
         Log.d("insert", "id: "+ins);
 //        return (ins == -1) ? false : true; // 성공 여부 반환
         if (ins == -1){
@@ -94,9 +95,11 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         // 아이디가 이미 존재
         if (cursor.getCount() > 0){
             cursor.close();
+            db.close();
             return false;
         }else{
             cursor.close();
+            db.close();
             return true;
         }
     }
@@ -123,9 +126,11 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
 //                login_user_password = cursor.getString(2);
 //            }
             cursor.close();
+            db.close();
             return new String[]{login_user_id, login_user_password};
         }else{
             cursor.close();
+            db.close();
             return new String[] {""};
         }
     }
@@ -141,6 +146,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         values.put(STORE_LOCATION_X, locationX);
         values.put(STORE_LOCATION_Y, locationY);
         long ins = db.insert(WHOLE_STORE_TABLE_NAME, null, values);
+        db.close();
         Log.d("insert store", "id: "+ins);
         if (ins == -1){
             return false;
@@ -189,9 +195,11 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
                 storelist.add(new String[] {id, user_id, store_kind, menu_kind, store, locationX.toString(), locationY.toString()});
             }
             cursor.close();
+            db.close();
             return storelist;
         }else{
             cursor.close();
+            db.close();
             return storelist;
         }
     }
@@ -208,6 +216,7 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
         values.put(MENU, menu);
         values.put(PRICE, price);
         long ins = db.insert(STORE_TABLE_NAME, null, values);
+        db.close();
         Log.d("insert menu", "id: "+ins);
         if (ins == -1){
             return false;
@@ -243,9 +252,11 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
                 storeInfo.add(new String[] {id, user_id, store_kind, menu_kind, store, menu, price});
             }
             cursor.close();
+            db.close();
             return storeInfo;
         }else{
             cursor.close();
+            db.close();
             return storeInfo;
         }
     }
@@ -267,10 +278,12 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
                     store_kind_Arr[1] = keyword_eathere;
                 }
             }
-            cursor.close();;
+            cursor.close();
+            db.close();
             return store_kind_Arr;
         }else{
             cursor.close();
+            db.close();
             return new String[] {"", ""};
         }
     }
@@ -297,9 +310,11 @@ public class DBHelper extends android.database.sqlite.SQLiteOpenHelper {
                 locationY = cursor.getDouble(cursor.getColumnIndex(STORE_LOCATION_Y));
             }
             cursor.close();
+            db.close();
             return new String[] {id, user_id, store_kind, menu_kind, store, locationX.toString(), locationY.toString()};
         }else{
             cursor.close();
+            db.close();
             return new String[] {""};
         }
     }

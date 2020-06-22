@@ -1,19 +1,14 @@
 package com.heejae.foopa;
 
-import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -45,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = new DBHelper(this, "foopa.db", null, 1);
+//        db = new DBHelper(this, "foopa.db", null, 1);
         myApp = (MyApplication) getApplication(); // 어플리케이션 객체
 
         // 네비게이션
@@ -89,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         Button address_btn = findViewById(R.id.set_address_Btn);
         double loc_x = myApp.getlocationX();
         double loc_y = myApp.getlocationY();
-        Log.d("loc", loc_x+""+loc_y);
+        Log.d("loc", loc_x+", "+loc_y);
         if (loc_x != 0.0 && loc_y != 0.0){
             String locationX = Double.toString(loc_x);
             String locationY = Double.toString(loc_y);
